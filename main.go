@@ -61,7 +61,7 @@ func copyFile(src, dst string) error {
 	return nil
 }
 
-// syncFolder synchronise la structure des dossiers de src vers dst.
+// synchronise la structure des dossiers de src vers dst.
 func syncFolder(src string, dst string) error {
 	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -89,7 +89,7 @@ func syncFolder(src string, dst string) error {
 	})
 }
 
-// sync synchronise les fichiers de src vers dst en vérifiant les différences de contenu.
+// synchronise les fichiers de src vers dst en vérifiant les différences de contenu.
 func sync(src string, dst string) error {
 	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -134,7 +134,7 @@ func sync(src string, dst string) error {
 	})
 }
 
-// main est le point d'entrée du programme.
+// Classic Entry Point.
 func main() {
 	// Définition de l'option verbose
 	flag.BoolVar(&verbose, "verbose", false, "Afficher des détails sur les fichiers transférés")
@@ -143,7 +143,7 @@ func main() {
 
 	// Vérifie que suffisamment d'arguments sont fournis
 	if flag.NArg() < 2 {
-		fmt.Println("Usage : ./gosync [options] [SRC1] [SRC2] ... [DST]")
+		fmt.Println("Usage : ./gosync [options] <SRC1> [SRC2] ... <DST>")
 		fmt.Println("Options :")
 		fmt.Println("  --verbose, -v    Afficher des détails sur les fichiers transférés")
 		fmt.Println("SRC : dossier(s) à synchroniser")
