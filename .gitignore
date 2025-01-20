@@ -1,0 +1,5 @@
+*.mod
+*.sum
+*.exe
+*.out
+gosync
