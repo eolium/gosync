@@ -17,7 +17,7 @@ Pour compiler GoSync à partir des sources, suivez les étapes ci-dessous :
    ```
 4. Compilez le programme :
    ```bash
-   go build -o gosync
+   go build main.go
    ```
 
 ## Utilisation
@@ -25,22 +25,22 @@ Pour compiler GoSync à partir des sources, suivez les étapes ci-dessous :
 ### Linux
 
 ```bash
-./gosync <source> <backup>
+./main <source> <backup>
 ```
 
 ```bash
-./gosync <source1> <source2> <source3> <backup>
+./main <source1> <source2> <source3> <backup>
 ```
 
 ### Windows
 
 
 ```cmd
-gosync.exe <source> <backup>
+main.exe <source> <backup>
 ```
 
 ```bat
-gosync.exe <source1> <source2> <source3> <backup>
+main.exe <source1> <source2> <source3> <backup>
 ```
 
 
