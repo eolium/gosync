@@ -13,10 +13,11 @@ import (
 
 // Variable globale pour activer/désactiver le mode verbose
 var verbose bool
+var quiet bool
 
 // Affiche les messages seulement si le mode verbose est activé
 func logVerbose(format string, args ...interface{}) {
-	if verbose {
+	if !quiet && verbose {
 		log.Printf(format, args...)
 	}
 }
@@ -26,13 +27,13 @@ func filehash(filename string) (string, error) {
 	hasher := sha256.New()
 	file, err := os.Open(filename)
 	if err != nil {
-		return "", fmt.Errorf("Échec d'ouverture du fichier : %w", err)
+		return "", fmt.Errorf("échec d'ouverture du fichier : %w", err)
 	}
 	defer file.Close()
 
 	_, err = io.Copy(hasher, file)
 	if err != nil {
-		return "", fmt.Errorf("Échec de calcul du hash : %w", err)
+		return "", fmt.Errorf("échec de calcul du hash : %w", err)
 	}
 
 	return hex.EncodeToString(hasher.Sum(nil)), nil
@@ -42,19 +43,19 @@ func filehash(filename string) (string, error) {
 func copyFile(src, dst string) error {
 	srcFile, err := os.Open(src)
 	if err != nil {
-		return fmt.Errorf("Échec d'ouverture du fichier source %s : %w", src, err)
+		return fmt.Errorf("échec d'ouverture du fichier source %s : %w", src, err)
 	}
 	defer srcFile.Close()
 
 	destFile, err := os.Create(dst)
 	if err != nil {
-		return fmt.Errorf("Échec de création du fichier destination %s : %w", dst, err)
+		return fmt.Errorf("échec de création du fichier destination %s : %w", dst, err)
 	}
 	defer destFile.Close()
 
 	_, err = io.Copy(destFile, srcFile)
 	if err != nil {
-		return fmt.Errorf("Échec de copie de %s vers %s : %w", src, dst, err)
+		return fmt.Errorf("échec de copie de %s vers %s : %w", src, dst, err)
 	}
 
 	logVerbose("Fichier %s copié vers %s\n", src, dst)
@@ -65,7 +66,7 @@ func copyFile(src, dst string) error {
 func syncFolder(src string, dst string) error {
 	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			return fmt.Errorf("Erreur lors de la navigation dans %s : %w", path, err)
+			return fmt.Errorf("erreur lors de la navigation dans %s : %w", path, err)
 		}
 
 		rpath, err := filepath.Rel(src, path)
@@ -79,7 +80,7 @@ func syncFolder(src string, dst string) error {
 			if _, err := os.Stat(dstPath); os.IsNotExist(err) {
 				err := os.MkdirAll(dstPath, info.Mode())
 				if err != nil {
-					return fmt.Errorf("Échec de création du dossier %s : %w", dstPath, err)
+					return fmt.Errorf("échec de création du dossier %s : %w", dstPath, err)
 				}
 				logVerbose("Dossier %s synchronisé\n", rpath)
 			}
@@ -93,7 +94,7 @@ func syncFolder(src string, dst string) error {
 func sync(src string, dst string) error {
 	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			return fmt.Errorf("Erreur lors de la navigation dans %s : %w", path, err)
+			return fmt.Errorf("erreur lors de la navigation dans %s : %w", path, err)
 		}
 
 		rpath, err := filepath.Rel(src, path)
@@ -139,6 +140,8 @@ func main() {
 	// Définition de l'option verbose
 	flag.BoolVar(&verbose, "verbose", false, "Afficher des détails sur les fichiers transférés")
 	flag.BoolVar(&verbose, "v", false, "Alias pour --verbose")
+	flag.BoolVar(&quiet, "quiet", false, "Ne rien afficher")
+	flag.BoolVar(&quiet, "quiet", false, "Alias pour --quiet")
 	flag.Parse()
 
 	// Vérifie que suffisamment d'arguments sont fournis
@@ -156,17 +159,21 @@ func main() {
 	for i := 0; i < flag.NArg()-1; i++ {
 		src := flag.Arg(i)
 
-		log.Printf("Synchronisation de %s vers %s\n", src, dst)
+		if !quiet {
+			log.Printf("Synchronisation de %s vers %s\n", src, dst)
+		}
 
 		err := syncFolder(src, dst)
-		if err != nil {
-			log.Fatalf("Échec de synchronisation des dossiers : %v\n", err)
+		if err != nil && !quiet {
+			log.Fatalf("échec de synchronisation des dossiers : %v\n", err)
 		}
 		err = sync(src, dst)
-		if err != nil {
-			log.Fatalf("Échec de synchronisation des fichiers : %v\n", err)
+		if err != nil && !quiet {
+			log.Fatalf("échec de synchronisation des fichiers : %v\n", err)
 		}
 	}
 
-	log.Println("Synchronisation terminée avec succès.")
+	if !quiet {
+		log.Println("Synchronisation terminée avec succès.")
+	}
 }
