@@ -24,6 +24,8 @@ func logVerbose(format string, args ...interface{}) {
 
 // calcule de la signature SHA256 d'un fichier donné et retourne sa valeur hexadécimale.
 func filehash(filename string) (string, error) {
+	logVerbose("Scan du fichier %s...", filename)
+
 	hasher := sha256.New()
 	file, err := os.Open(filename)
 	if err != nil {
