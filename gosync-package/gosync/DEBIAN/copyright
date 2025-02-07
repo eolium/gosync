@@ -1,0 +1,7 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: myScript
+Upstream-Contact: Eolium, <eolium@github>
+
+Files: *
+Copyright: 2025, Eolium, <eolium@github>
+License: (GPL-2+ | LGPL-2 | GPL-3)

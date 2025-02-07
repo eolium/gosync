@@ -45,6 +45,7 @@ main.exe <source1> <source2> <source3> <backup>
 
 
 ## Options
+
 | Option          | Description                                                                 |
 |-----------------|-----------------------------------------------------------------------------|
 | `-v, --verbose` | Affiche des informations détaillées pendant l'exécution.                    |
@@ -52,3 +53,12 @@ main.exe <source1> <source2> <source3> <backup>
 ## Conseils d'utilisation
 
 Il est conseillé de sauvegarder l'exécutable dans un dossier quelconque, puis de créer un script batch pour exécuter la commande et éviter de réécrire le même chemin.
+
+
+
+## Ajouts futurs
+
+| Option | Description |
+| Dry-run | Option --dry-run pour tester la commande sans effectuer de modifications |
+| Progressbar | à la nmap quand on fait entrée pour avoir un approx de où on en est de la synchro ou print dans le terminal. |
+| Menu contextuel | implémentation d'un raccourci pour lancer la commande au clic droit dans le dossier (passer par le regedit pour windows, un peu plus tricky pour linux) |

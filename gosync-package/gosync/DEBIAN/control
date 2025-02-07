@@ -1,0 +1,9 @@
+Source: gosync
+Package: gosync
+Version: 1.0
+Section: base
+Priority: optional
+Architecture: all
+Depends: bash
+Maintainer: Eolium <eolium@github>
+Description: Simple fork for rsync available for windows and linux

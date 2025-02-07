@@ -141,7 +141,7 @@ func main() {
 	flag.BoolVar(&verbose, "verbose", false, "Afficher des détails sur les fichiers transférés")
 	flag.BoolVar(&verbose, "v", false, "Alias pour --verbose")
 	flag.BoolVar(&quiet, "quiet", false, "Ne rien afficher")
-	flag.BoolVar(&quiet, "quiet", false, "Alias pour --quiet")
+	flag.BoolVar(&quiet, "q", false, "Alias pour --quiet")
 	flag.Parse()
 
 	// Vérifie que suffisamment d'arguments sont fournis
@@ -149,6 +149,7 @@ func main() {
 		fmt.Println("Usage : ./gosync [options] <SRC1> [SRC2] ... <DST>")
 		fmt.Println("Options :")
 		fmt.Println("  --verbose, -v    Afficher des détails sur les fichiers transférés")
+		fmt.Println("  --quiet, -q      Mode silencieux")
 		fmt.Println("SRC : dossier(s) à synchroniser")
 		fmt.Println("DST : dossier de destination")
 		return
